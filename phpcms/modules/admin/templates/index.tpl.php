@@ -16,7 +16,18 @@
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>hotkeys.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>jquery.sgallery.js"></script>
 <script type="text/javascript">
-var pc_hash = '<?php echo $_SESSION['pc_hash']?>'
+    var pc_hash = '<?php echo $_SESSION['pc_hash']?>'
+    $(document).ready(function(){
+        $(".tabmember").click(function(){
+            // alert(0);
+            $(".tabmember").parent().siblings().removeClass("active");
+            $(this).parent().addClass("active");
+            var id  = $(this).attr('vid');
+            var url = $(this).attr('url');
+            _M(id, url);
+        });
+    
+    });
 </script>
 <style type="text/css">
 .objbody{overflow:hidden}
@@ -27,7 +38,7 @@ var pc_hash = '<?php echo $_SESSION['pc_hash']?>'
     <div id="dvLockScreenWin" class="inputpwd">
     <h5><b class="ico ico-info"></b><span id="lock_tips"><?php echo L('lockscreen_status');?></span></h5>
     <div class="input">
-    	<label class="lb"><?php echo L('password')?>：</label><input type="password" id="lock_password" class="input-text" size="24">
+        <label class="lb"><?php echo L('password')?>：</label><input type="password" id="lock_password" class="input-text" size="24">
         <input type="submit" class="submit" value="&nbsp;" name="dosubmit" onclick="check_screenlock();return false;">
     </div></div>
 </div>
@@ -58,12 +69,20 @@ var pc_hash = '<?php echo $_SESSION['pc_hash']?>'
         <?php
         $array = admin::admin_menu(0);
         foreach($array as $_value) {
-        	if($_value['id']==10) {
-        		echo '<li id="_M'.$_value['id'].'" class="active" ><a href="javascript:_M('.$_value['id'].',\'?m='.$_value['m'].'&c='.$_value['c'].'&a='.$_value['a'].'\');" hidefocus="true" style="outline:none;">'.L($_value['name']).'</a></li>';
-        		
-        	} else {
-        		echo '<li id="_M'.$_value['id'].'" class="" ><a href="javascript:_M('.$_value['id'].',\'?m='.$_value['m'].'&c='.$_value['c'].'&a='.$_value['a'].'\')"  hidefocus="true" style="outline:none;">'.L($_value['name']).'</a></li>';
-        	}      	
+            $id  = $_value['id'];
+            $m   = $_value['m'];
+            $c   = $_value['c'];
+            $a   = $_value['a'];
+            $url = '?m='.$m.'&c='.$c.'&a='.$a;
+            $name = L($_value['name']);
+            if(10 == $_value['id']) {
+                // echo '<li id="_M'.$_value['id'].'" class="active" ><a href="javascript:_M('.$_value['id'].',\'?m='.$_value['m'].'&c='.$_value['c'].'&a='.$_value['a'].'\');" hidefocus="true" class="tabmember" >'.L($_value['name']).'</a></li>';
+                echo "<li class='active' ><a href='javascript:;' vid='{$id}' url='{$url}' hidefocus='true' class='tabmember' >{$name}</a></li>";
+                
+            } else {
+                // echo '<li id="_M'.$_value['id'].'" ><a href="javascript:_M('.$_value['id'].',\'?m='.$_value['m'].'&c='.$_value['c'].'&a='.$_value['a'].'\')"  hidefocus="true" class="tabmember" >'.L($_value['name']).'</a></li>';
+                echo "<li><a href='javascript:;' vid='{$id}' url='{$url}' hidefocus='true' class='tabmember' >{$name}</a></li>";
+            }
         }
         ?>
         <li>
@@ -116,7 +135,7 @@ var pc_hash = '<?php echo $_SESSION['pc_hash']?>'
 <div class="tab-web-panel hidden" style="position:absolute; z-index:999; background:#fff">
 <ul>
 <?php foreach ($sitelist as $key=>$v):?>
-	<li style="margin:0"><a href="javascript:site_select(<?php echo $v['siteid']?>, '<?php echo new_addslashes($v['name'])?>', '<?php echo $v['domain']?>', '<?php echo $v['siteid']?>')"><?php echo $v['name']?></a></li>
+    <li style="margin:0"><a href="javascript:site_select(<?php echo $v['siteid']?>, '<?php echo new_addslashes($v['name'])?>', '<?php echo $v['domain']?>', '<?php echo $v['siteid']?>')"><?php echo $v['name']?></a></li>
 <?php endforeach;?>
 </ul>
 </div>
@@ -126,9 +145,9 @@ if(!Array.prototype.map)
 Array.prototype.map = function(fn,scope) {
   var result = [],ri = 0;
   for (var i = 0,n = this.length; i < n; i++){
-	if(i in this){
-	  result[ri++]  = fn.call(scope ,this[i],i,this);
-	}
+    if(i in this){
+      result[ri++]  = fn.call(scope ,this[i],i,this);
+    }
   }
 return result;
 };
@@ -136,238 +155,238 @@ return result;
 var getWindowSize = function(){
 return ["Height","Width"].map(function(name){
   return window["inner"+name] ||
-	document.compatMode === "CSS1Compat" && document.documentElement[ "client" + name ] || document.body[ "client" + name ]
+    document.compatMode === "CSS1Compat" && document.documentElement[ "client" + name ] || document.body[ "client" + name ]
 });
 }
 window.onload = function (){
-	if(!+"\v1" && !document.querySelector) { // for IE6 IE7
-	  document.body.onresize = resize;
-	} else { 
-	  window.onresize = resize;
-	}
-	function resize() {
-		wSize();
-		return false;
-	}
+    if(!+"\v1" && !document.querySelector) { // for IE6 IE7
+      document.body.onresize = resize;
+    } else { 
+      window.onresize = resize;
+    }
+    function resize() {
+        wSize();
+        return false;
+    }
 }
 function wSize(){
-	//这是一字符串
-	var str=getWindowSize();
-	var strs= new Array(); //定义一数组
-	strs=str.toString().split(","); //字符分割
-	var heights = strs[0]-150,Body = $('body');$('#rightMain').height(heights);   
-	//iframe.height = strs[0]-46;
-	if(strs[1]<980){
-		$('.header').css('width',980+'px');
-		$('#content').css('width',980+'px');
-		Body.attr('scroll','');
-		Body.removeClass('objbody');
-	}else{
-		$('.header').css('width','auto');
-		$('#content').css('width','auto');
-		Body.attr('scroll','no');
-		Body.addClass('objbody');
-	}
-	
-	var openClose = $("#rightMain").height()+39;
-	$('#center_frame').height(openClose+9);
-	$("#openClose").height(openClose+30);	
-	$("#Scroll").height(openClose-20);
-	windowW();
+    //这是一字符串
+    var str=getWindowSize();
+    var strs= new Array(); //定义一数组
+    strs=str.toString().split(","); //字符分割
+    var heights = strs[0]-150,Body = $('body');$('#rightMain').height(heights);   
+    //iframe.height = strs[0]-46;
+    if(strs[1]<980){
+        $('.header').css('width',980+'px');
+        $('#content').css('width',980+'px');
+        Body.attr('scroll','');
+        Body.removeClass('objbody');
+    }else{
+        $('.header').css('width','auto');
+        $('#content').css('width','auto');
+        Body.attr('scroll','no');
+        Body.addClass('objbody');
+    }
+    
+    var openClose = $("#rightMain").height()+39;
+    $('#center_frame').height(openClose+9);
+    $("#openClose").height(openClose+30);	
+    $("#Scroll").height(openClose-20);
+    windowW();
 }
 wSize();
 function windowW(){
-	if($('#Scroll').height()<$("#leftMain").height()){
-		$(".scroll").show();
-	}else{
-		$(".scroll").hide();
-	}
+    if($('#Scroll').height()<$("#leftMain").height()){
+        $(".scroll").show();
+    }else{
+        $(".scroll").hide();
+    }
 }
 windowW();
 //站点下拉菜单
 $(function(){
-	var offset = $(".tab_web").offset();
-	var tab_web_panel = $(".tab-web-panel");
-	$(".tab_web").mouseover(function(){
-			tab_web_panel.css({ "left": +offset.left+4, "top": +offset.top+$('.tab_web').height()+2});
-			tab_web_panel.show();
-			if(tab_web_panel.height() > 200){
-				tab_web_panel.children("ul").addClass("tab-scroll");
-			}
-		});
-	$(".tab_web span").mouseout(function(){hidden_site_list_1()});
-	$(".tab-web-panel").mouseover(function(){clearh();$('.tab_web a').addClass('on')}).mouseout(function(){hidden_site_list_1();$('.tab_web a').removeClass('on')});
-	//默认载入左侧菜单
-	$("#leftMain").load("?m=admin&c=index&a=public_menu_left&menuid=10");
+    var offset = $(".tab_web").offset();
+    var tab_web_panel = $(".tab-web-panel");
+    $(".tab_web").mouseover(function(){
+            tab_web_panel.css({ "left": +offset.left+4, "top": +offset.top+$('.tab_web').height()+2});
+            tab_web_panel.show();
+            if(tab_web_panel.height() > 200){
+                tab_web_panel.children("ul").addClass("tab-scroll");
+            }
+        });
+    $(".tab_web span").mouseout(function(){hidden_site_list_1()});
+    $(".tab-web-panel").mouseover(function(){clearh();$('.tab_web a').addClass('on')}).mouseout(function(){hidden_site_list_1();$('.tab_web a').removeClass('on')});
+    //默认载入左侧菜单
+    $("#leftMain").load("?m=admin&c=index&a=public_menu_left&menuid=10");
 })
 //站点选择
 function site_select(id,name, domain, siteid) {
-	$(".tab_web span").html(name);
-	$.get("?m=admin&c=index&a=public_set_siteid&siteid="+id,function(data){
-		if (data==1){
-				window.top.right.location.reload();
-				window.top.center_frame.location.reload();
-				$.get("?m=admin&c=index&a=public_menu_left&menuid=0&parentid="+$("#bigid").val(), function(data){$('.top_menu').remove();$('#top_menu').prepend(data)});
-			}
-		});
-	$('#site_homepage').attr('href', domain);
-	$('#site_search').attr('href', 'index.php?m=search&siteid='+siteid);
+    $(".tab_web span").html(name);
+    $.get("?m=admin&c=index&a=public_set_siteid&siteid="+id,function(data){
+        if (data==1){
+                window.top.right.location.reload();
+                window.top.center_frame.location.reload();
+                $.get("?m=admin&c=index&a=public_menu_left&menuid=0&parentid="+$("#bigid").val(), function(data){$('.top_menu').remove();$('#top_menu').prepend(data)});
+            }
+        });
+    $('#site_homepage').attr('href', domain);
+    $('#site_search').attr('href', 'index.php?m=search&siteid='+siteid);
 }
 //隐藏站点下拉。
 var s = 0;
 var h;
 function hidden_site_list() {
-	s++;
-	if(s>=3) {
-		$('.tab-web-panel').hide();
-		clearInterval(h);
-		s = 0;
-	}
+    s++;
+    if(s>=3) {
+        $('.tab-web-panel').hide();
+        clearInterval(h);
+        s = 0;
+    }
 }
 function clearh(){
-	if(h)clearInterval(h);
+    if(h)clearInterval(h);
 }
 function hidden_site_list_1() {
-	h = setInterval("hidden_site_list()", 1);
+    h = setInterval("hidden_site_list()", 1);
 }
 
 //左侧开关
 $("#openClose").click(function(){
-	if($(this).data('clicknum')==1) {
-		$("html").removeClass("on");
-		$(".left_menu").removeClass("left_menu_on");
-		$(this).removeClass("close");
-		$(this).data('clicknum', 0);
-		$(".scroll").show();
-	} else {
-		$(".left_menu").addClass("left_menu_on");
-		$(this).addClass("close");
-		$("html").addClass("on");
-		$(this).data('clicknum', 1);
-		$(".scroll").hide();
-	}
-	return false;
+    if($(this).data('clicknum')==1) {
+        $("html").removeClass("on");
+        $(".left_menu").removeClass("left_menu_on");
+        $(this).removeClass("close");
+        $(this).data('clicknum', 0);
+        $(".scroll").show();
+    } else {
+        $(".left_menu").addClass("left_menu_on");
+        $(this).addClass("close");
+        $("html").addClass("on");
+        $(this).data('clicknum', 1);
+        $(".scroll").hide();
+    }
+    return false;
 });
 
 function _M(menuid,targetUrl) {
-	$("#menuid").val(menuid);
-	$("#bigid").val(menuid);
-	$("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em><?php echo L('add')?></em></a>');
-	if(menuid!=8) {
-		$("#leftMain").load("?m=admin&c=index&a=public_menu_left&menuid="+menuid, {limit: 25}, function(){
-		   windowW();
-		 });
-	} else {
-		$("#leftMain").load("?m=admin&c=phpsso&a=public_menu_left&menuid="+menuid, {limit: 25}, function(){
-		   windowW();
-		 });
-	}
-	//$("#rightMain").attr('src', targetUrl);
-	$('.top_menu').removeClass("on");
-	$('#_M'+menuid).addClass("on");
-	$.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid, function(data){
-		$("#current_pos").html(data);
-	});
-	//当点击顶部菜单后，隐藏中间的框架
-	$('#display_center_id').css('display','none');
-	//显示左侧菜单，当点击顶部时，展开左侧
-	$(".left_menu").removeClass("left_menu_on");
-	$("#openClose").removeClass("close");
-	$("html").removeClass("on");
-	$("#openClose").data('clicknum', 0);
-	$("#current_pos").data('clicknum', 1);
+    $("#menuid").val(menuid);
+    $("#bigid").val(menuid);
+    $("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em><?php echo L('add')?></em></a>');
+    if(menuid!=8) {
+        $("#leftMain").load("?m=admin&c=index&a=public_menu_left&menuid="+menuid, {limit: 25}, function(){
+           windowW();
+         });
+    } else {
+        $("#leftMain").load("?m=admin&c=phpsso&a=public_menu_left&menuid="+menuid, {limit: 25}, function(){
+           windowW();
+         });
+    }
+    //$("#rightMain").attr('src', targetUrl);
+    // $('.top_menu').removeClass("on");
+    // $('#_M'+menuid).addClass("on");
+    $.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid, function(data){
+        $("#current_pos").html(data);
+    });
+    //当点击顶部菜单后，隐藏中间的框架
+    $('#display_center_id').css('display','none');
+    //显示左侧菜单，当点击顶部时，展开左侧
+    // $(".left_menu").removeClass("left_menu_on");
+    // $("#openClose").removeClass("close");
+    $("html").removeClass("on");
+    $("#openClose").data('clicknum', 0);
+    $("#current_pos").data('clicknum', 1);
 }
 function _MP(menuid,targetUrl) {
-	$("#menuid").val(menuid);
-	$("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em><?php echo L('add')?></em></a>');
+    $("#menuid").val(menuid);
+    $("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em><?php echo L('add')?></em></a>');
 
-	$("#rightMain").attr('src', targetUrl+'&menuid='+menuid+'&pc_hash='+pc_hash);
-	$('.sub_menu').removeClass("on fb blue");
-	$('#_MP'+menuid).addClass("on fb blue");
-	$.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid, function(data){
-		$("#current_pos").html(data+'<span id="current_pos_attr"></span>');
-	});
-	$("#current_pos").data('clicknum', 1);
-	show_help(targetUrl);
+    $("#rightMain").attr('src', targetUrl+'&menuid='+menuid+'&pc_hash='+pc_hash);
+    $('.sub_menu').removeClass("on fb blue");
+    $('#_MP'+menuid).addClass("on fb blue");
+    $.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid, function(data){
+        $("#current_pos").html(data+'<span id="current_pos_attr"></span>');
+    });
+    $("#current_pos").data('clicknum', 1);
+    show_help(targetUrl);
 }
 
 function show_help(targetUrl) {
-	$("#help").slideUp("slow");
-	var str = '';
-	$.getJSON("http://v9.help.phpcms.cn/api.php?jsoncallback=?",{op:'help',targetUrl: targetUrl},
-	function(data){
-		if(data!=null) {
-			$("#help").slideDown("slow");
-			$.each(data, function(i,item){
-				str += '<a href="'+item.url+'" target="_blank">'+item.title+'</a>';
-			});
-			
-			str += '<a class="panel-delete" href="javascript:;" onclick="$(\'#help\').slideUp(\'slow\')"></a>';
-			$('#help').html(str);
-		}
-	});
-	$("#help").data('time', 1);
+    $("#help").slideUp("slow");
+    var str = '';
+    $.getJSON("http://v9.help.phpcms.cn/api.php?jsoncallback=?",{op:'help',targetUrl: targetUrl},
+    function(data){
+        if(data!=null) {
+            $("#help").slideDown("slow");
+            $.each(data, function(i,item){
+                str += '<a href="'+item.url+'" target="_blank">'+item.title+'</a>';
+            });
+            
+            str += '<a class="panel-delete" href="javascript:;" onclick="$(\'#help\').slideUp(\'slow\')"></a>';
+            $('#help').html(str);
+        }
+    });
+    $("#help").data('time', 1);
 }
 setInterval("hidden_help()", 10000);
 function hidden_help() {
-	var htime = $("#help").data('time')+1;
-	$("#help").data('time', htime);
-	if(htime>2) $("#help").slideUp("slow");
+    var htime = $("#help").data('time')+1;
+    $("#help").data('time', htime);
+    if(htime>2) $("#help").slideUp("slow");
 }
 function add_panel() {
-	var menuid = $("#menuid").val();
-	$.ajax({
-		type: "POST",
-		url: "?m=admin&c=index&a=public_ajax_add_panel",
-		data: "menuid=" + menuid,
-		success: function(data){
-			if(data) {
-				$("#panellist").html(data);
-			}
-		}
-	});
+    var menuid = $("#menuid").val();
+    $.ajax({
+        type: "POST",
+        url: "?m=admin&c=index&a=public_ajax_add_panel",
+        data: "menuid=" + menuid,
+        success: function(data){
+            if(data) {
+                $("#panellist").html(data);
+            }
+        }
+    });
 }
 function delete_panel(menuid, id) {
-	$.ajax({
-		type: "POST",
-		url: "?m=admin&c=index&a=public_ajax_delete_panel",
-		data: "menuid=" + menuid,
-		success: function(data){
-			$("#panellist").html(data);
-		}
-	});
+    $.ajax({
+        type: "POST",
+        url: "?m=admin&c=index&a=public_ajax_delete_panel",
+        data: "menuid=" + menuid,
+        success: function(data){
+            $("#panellist").html(data);
+        }
+    });
 }
 
 function paneladdclass(id) {
-	$("#panellist span a[class='on']").removeClass();
-	$(id).addClass('on')
+    $("#panellist span a[class='on']").removeClass();
+    $(id).addClass('on')
 }
 setInterval("session_life()", 160000);
 function session_life() {
-	$.get("?m=admin&c=index&a=public_session_life");
+    $.get("?m=admin&c=index&a=public_session_life");
 }
 function lock_screen() {
-	$.get("?m=admin&c=index&a=public_lock_screen");
-	$('#dvLockScreen').css('display','');
+    $.get("?m=admin&c=index&a=public_lock_screen");
+    $('#dvLockScreen').css('display','');
 }
 function check_screenlock() {
-	var lock_password = $('#lock_password').val();
-	if(lock_password=='') {
-		$('#lock_tips').html('<font color="red"><?php echo L('password_can_not_be_empty');?></font>');
-		return false;
-	}
-	$.get("?m=admin&c=index&a=public_login_screenlock", { lock_password: lock_password},function(data){
-		if(data==1) {
-			$('#dvLockScreen').css('display','none');
-			$('#lock_password').val('');
-			$('#lock_tips').html('<?php echo L('lockscreen_status');?>');
-		} else if(data==3) {
-			$('#lock_tips').html('<font color="red"><?php echo L('wait_1_hour_lock');?></font>');
-		} else {
-			strings = data.split('|');
-			$('#lock_tips').html('<font color="red"><?php echo L('password_error_lock');?>'+strings[1]+'<?php echo L('password_error_lock2');?></font>');
-		}
-	});
+    var lock_password = $('#lock_password').val();
+    if(lock_password=='') {
+        $('#lock_tips').html('<font color="red"><?php echo L('password_can_not_be_empty');?></font>');
+        return false;
+    }
+    $.get("?m=admin&c=index&a=public_login_screenlock", { lock_password: lock_password},function(data){
+        if(data==1) {
+            $('#dvLockScreen').css('display','none');
+            $('#lock_password').val('');
+            $('#lock_tips').html('<?php echo L('lockscreen_status');?>');
+        } else if(data==3) {
+            $('#lock_tips').html('<font color="red"><?php echo L('wait_1_hour_lock');?></font>');
+        } else {
+            strings = data.split('|');
+            $('#lock_tips').html('<font color="red"><?php echo L('password_error_lock');?>'+strings[1]+'<?php echo L('password_error_lock2');?></font>');
+        }
+    });
 }
 $(document).bind('keydown', 'return', function(evt){check_screenlock();return false;});
 
@@ -389,31 +408,31 @@ $(document).bind('keydown', 'return', function(evt){check_screenlock();return fa
     // IE6/IE7/IE8/Opera 10+/Safari5+
     addEvent(Scroll, 'mousewheel', function(event){
         event = window.event || event ;  
-		if(event.wheelDelta <= 0 || event.detail > 0) {
-				Scroll.scrollTop = Scroll.scrollTop + 29;
-			} else {
-				Scroll.scrollTop = Scroll.scrollTop - 29;
-		}
+        if(event.wheelDelta <= 0 || event.detail > 0) {
+                Scroll.scrollTop = Scroll.scrollTop + 29;
+            } else {
+                Scroll.scrollTop = Scroll.scrollTop - 29;
+        }
     }, false);
 
     // Firefox 3.5+
     addEvent(Scroll, 'DOMMouseScroll',  function(event){
         event = window.event || event ;
-		if(event.wheelDelta <= 0 || event.detail > 0) {
-				Scroll.scrollTop = Scroll.scrollTop + 29;
-			} else {
-				Scroll.scrollTop = Scroll.scrollTop - 29;
-		}
+        if(event.wheelDelta <= 0 || event.detail > 0) {
+                Scroll.scrollTop = Scroll.scrollTop + 29;
+            } else {
+                Scroll.scrollTop = Scroll.scrollTop - 29;
+        }
     }, false);
-	
+    
 })();
 function menuScroll(num){
-	var Scroll = document.getElementById('Scroll');
-	if(num==1){
-		Scroll.scrollTop = Scroll.scrollTop - 60;
-	}else{
-		Scroll.scrollTop = Scroll.scrollTop + 60;
-	}
+    var Scroll = document.getElementById('Scroll');
+    if(num==1){
+        Scroll.scrollTop = Scroll.scrollTop - 60;
+    }else{
+        Scroll.scrollTop = Scroll.scrollTop + 60;
+    }
 }
 </script>
 </body>
