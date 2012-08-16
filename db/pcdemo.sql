@@ -19,6 +19,10 @@
 -- Table structure for table `pc_admin`
 --
 
+create DATABASE pcdemo DEFAULT CHARACTER set utf8;
+use pcdemo;
+
+
 DROP TABLE IF EXISTS `pc_admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
