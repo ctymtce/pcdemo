@@ -1,0 +1,17 @@
+<?php exit;?>08-16 21:19:15 | 2 | mysql_connect(): Access denied for user 'root'@'localhost' (using password: YES) | phpcms\libs\classes\mysql.class.php | 56
+<?php exit;?>08-16 21:19:15 | 2 | mysql_error() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 388
+<?php exit;?>08-16 21:19:15 | 2 | mysql_errno() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 392
+<?php exit;?>08-16 21:19:15 | 2 | mysql_errno() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 392
+<?php exit;?>08-16 21:19:15 | 2 | mysql_error() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 388
+<?php exit;?>08-16 21:19:15 | 2 | mysql_connect(): Access denied for user 'root'@'localhost' (using password: YES) | phpcms\libs\classes\mysql.class.php | 56
+<?php exit;?>08-16 21:19:15 | 2 | mysql_error() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 388
+<?php exit;?>08-16 21:19:15 | 2 | mysql_errno() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 392
+<?php exit;?>08-16 21:19:15 | 2 | mysql_errno() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 392
+<?php exit;?>08-16 21:19:15 | 2 | mysql_error() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 388
+<?php exit;?>08-16 22:16:13 | 2 | mysql_connect(): Access denied for user ''@'localhost' (using password: NO) | phpcms\libs\classes\mysql.class.php | 56
+<?php exit;?>08-16 22:16:13 | 2 | mysql_query() expects parameter 2 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 86
+<?php exit;?>08-16 22:16:13 | 2 | mysql_fetch_array() expects parameter 1 to be resource, null given | phpcms\libs\classes\mysql.class.php | 162
+<?php exit;?>08-16 22:16:13 | 2 | mysql_connect(): Access denied for user ''@'localhost' (using password: NO) | phpcms\libs\classes\mysql.class.php | 56
+<?php exit;?>08-16 22:16:13 | 2 | mysql_query() expects parameter 2 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 86
+<?php exit;?>08-16 22:16:13 | 2 | mysql_insert_id() expects parameter 1 to be resource, boolean given | phpcms\libs\classes\mysql.class.php | 219
+<?php exit;?>08-16 22:16:13 | 2 | mysql_connect(): Access denied for user ''@'localhost' (using password: NO) | phpcms\libs\classes\mysql.class.php | 56
